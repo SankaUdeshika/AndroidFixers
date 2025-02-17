@@ -1,3 +1,42 @@
 <resources>
     <string name="app_name">AndroidFixers</string>
+    <string name="Pleasewait">Please Wait</string>
+
+    <!--    Common-->
+    <string name="Next">NEXT</string>
+    <string name="Ok">OK</string>
+    <string name="cancel">CANCEL</string>
+    <string name="Save">SAVE</string>
+    <string name="REMEMBER">Remember me</string>
+
+
+    <!--    Login Component-->
+    <string name="Login_topic">User Sign In</string>
+    <string name="Login_topic_subtopic">Please sign in here if you have a account</string>
+    <string name="Login_mobile">Enter Your Mobile</string>
+    <string name="Login_password">Enter Your Password</string>
+    <string name="Login_button">Sign In</string>
+    <string name="Register_Link">Already Have a Account? Click here</string>
+
+    <!--        Register Component-->
+    <string name="register_topic">User Register</string>
+    <string name="register_topic_subtopic">Please Register if You do not have an account</string>
+    <string name="register_mobile">Enter Your Mobile</string>
+    <string name="register_name">Enter Your Name</string>
+    <string name="register_email">Enter Your Email</string>
+    <string name="register_password">Enter Your Password</string>
+
+    <!--    google maps text-->
+    <string name="address_map_Alert"> if you need this service. you have to give your home location</string>
+    <string name="address_map_Description">Please Search you Locatin and Hit Save Button</string>
+    <string name="title_activity_home">HomeActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <!--  My Profile text  -->
+    <string name="action_profile_imageChange">Change Image</string>
 </resources>
