@@ -6,4 +6,13 @@
     </style>
 
     <style name="Theme.AndroidFixers" parent="Base.Theme.AndroidFixers" />
+
+    <style name="Theme.AndroidFixers.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.AndroidFixers.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.AndroidFixers.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
