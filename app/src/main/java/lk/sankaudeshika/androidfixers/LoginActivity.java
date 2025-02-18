@@ -50,8 +50,7 @@ public class LoginActivity extends AppCompatActivity {
         login_lLinearLayout.addView(view);
 
         //        Check Shared Preferences part is existing
-        SharedPreferences sp = getSharedPreferences("lk.sankaudeshika.androidfixerbee", Context.MODE_PRIVATE);
-
+        SharedPreferences sp = getSharedPreferences("lk.sankaudeshika.androidfixers", Context.MODE_PRIVATE);
 
         // remember swithch on/Off
         Switch rememberMeSwitch = view.findViewById(R.id.loginRememberMeSwitch);
@@ -135,6 +134,7 @@ public class LoginActivity extends AppCompatActivity {
 
                                         for (DocumentSnapshot documentItem : documentList ) {
                                             SharedPreferences.Editor editor = sp.edit();
+                                            editor.putString("Default_mobile",String.valueOf(documentItem.get("mobile_1")));
 
                                             if(rememberMeSwitch.isChecked() == true){
                                                 Log.i("appout","Go Dashabord");
@@ -162,8 +162,8 @@ public class LoginActivity extends AppCompatActivity {
 
                                             if(String.valueOf(documentItem.get("status")).equals("active")){
                                                 Log.i("appout","Go Dashabord");
-//                                                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
-//                                                startActivity(intent);
+                                                Intent intent = new Intent(LoginActivity.this,HomeActivity.class);
+                                                startActivity(intent);
 
                                             }else if(String.valueOf(documentItem.get("status")).equals("deactive")){
                                                 new AlertDialog.Builder(LoginActivity.this).setTitle("Your Account is Restriced,").setMessage("Please Try Contact Us and Get Solution for this").show();
