@@ -10,4 +10,6 @@
     <!--    Text Colors-->
     <color name="mainText">#FF000000</color>
     <color name="subText">#6D6A6A</color>
+    <color name="WarningText">#FF0000</color>
+    <color name="SuccessText">#048A07</color>
 </resources>

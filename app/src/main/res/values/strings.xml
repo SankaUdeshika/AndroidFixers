@@ -21,10 +21,16 @@
     <!--        Register Component-->
     <string name="register_topic">User Register</string>
     <string name="register_topic_subtopic">Please Register if You do not have an account</string>
-    <string name="register_mobile">Enter Your Mobile</string>
+    <string name="register_mobile">Enter Your Main Mobile </string>
+    <string name="register_mobile2">Enter Your Company Mobile </string>
     <string name="register_name">Enter Your Name</string>
+    <string name="register_company_name">Enter Your Company Name</string>
     <string name="register_email">Enter Your Email</string>
     <string name="register_password">Enter Your Password</string>
+    <string name="register_part2">Please Fill the Details</string>
+    <string name="register_DropDownTopic">Please Fill the Details</string>
+    <string name="register_AddNewCategory_button">Add New Category</string>
+
 
     <!--    google maps text-->
     <string name="address_map_Alert"> if you need this service. you have to give your home location</string>
