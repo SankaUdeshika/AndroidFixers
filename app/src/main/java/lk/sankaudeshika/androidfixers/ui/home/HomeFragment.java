@@ -28,6 +28,7 @@ import lk.sankaudeshika.androidfixers.databinding.FragmentHomeBinding;
 public class HomeFragment extends Fragment {
 
     private FragmentHomeBinding binding;
+    Intent i;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -54,8 +55,14 @@ public class HomeFragment extends Fragment {
                         for (DocumentSnapshot item: snapShots) {
                             if(item.getString("locaiton").equals("none")){
                                 Log.i("appout", "onComplete: ");
+
                                 Intent intent = new Intent(root.getContext(), ShopLocatoinActivity.class);
+                                i = intent;
+
                                 startActivity(intent);
+
+
+
                             }
                         }
                     }
@@ -63,6 +70,31 @@ public class HomeFragment extends Fragment {
 
 
         return root;
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        SharedPreferences sp = requireActivity().getSharedPreferences("lk.sankaudeshika.androidfixers", Context.MODE_PRIVATE);
+        String mobile = sp.getString("Default_mobile","null");
+
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("vendor")
+                .whereEqualTo("mobile_1",mobile)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        List<DocumentSnapshot> snapShots = task.getResult().getDocuments();
+                        for (DocumentSnapshot item: snapShots) {
+                            if(item.getString("locaiton").equals("none")){
+                                Log.i("appout", "onComplete: ");
+                                startActivity(i);
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
