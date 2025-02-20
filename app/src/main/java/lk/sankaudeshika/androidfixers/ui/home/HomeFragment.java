@@ -58,15 +58,16 @@ public class HomeFragment extends Fragment {
 
                                 Intent intent = new Intent(root.getContext(), ShopLocatoinActivity.class);
                                 i = intent;
-
                                 startActivity(intent);
-
-
-
                             }
                         }
                     }
                 });
+
+
+
+
+
 
 
         return root;

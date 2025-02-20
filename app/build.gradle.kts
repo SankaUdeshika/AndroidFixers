@@ -53,4 +53,5 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     implementation("com.github.denzcoskun:ImageSlideshow:0.1.2")
     implementation("com.google.android.libraries.places:places:3.4.0")
+    implementation ("com.github.PhilJay:MPAndroidChart:v3.1.0")
 }

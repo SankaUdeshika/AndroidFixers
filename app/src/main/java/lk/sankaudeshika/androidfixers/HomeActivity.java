@@ -7,6 +7,10 @@ import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,16 +27,24 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.util.ArrayList;
+
 import lk.sankaudeshika.androidfixers.databinding.ActivityHomeBinding;
 
 public class HomeActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
     private ActivityHomeBinding binding;
+    //        pichart Variables
+    float DoneCount ;
+    float PendingCount ;
+    String vendor_id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
 
         binding = ActivityHomeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
@@ -58,6 +70,12 @@ public class HomeActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
+//        SharedPreferences Details
+        SharedPreferences sp = getSharedPreferences("lk.sankaudeshika.androidfixers",Context.MODE_PRIVATE);
+        vendor_id = sp.getString("Default_vendor_id","null");
+
+
+
 
 
     }
@@ -74,5 +92,63 @@ public class HomeActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_home);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+//        Load Pie Chart
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("booking")
+                .whereEqualTo("vendor_id",vendor_id)
+                .whereEqualTo("status","pending")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        PendingCount = task.getResult().size();
+                        Log.i("appout", "onComplete: "+task.getResult().size());
+
+                        firestore.collection("booking")
+                                .whereEqualTo("vendor_id",vendor_id)
+                                .whereEqualTo("status","done")
+                                .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        DoneCount = task.getResult().size();
+                                        Log.i("appout", "onComplete: "+task.getResult().size());
+
+                                        Log.i("appout", "onComplete: "+PendingCount);
+
+                                        PieChart pieChart = findViewById(R.id.HomepieChart);
+                                        ArrayList<PieEntry> pieEntryList = new ArrayList<>();
+                                        pieEntryList.add(new PieEntry(DoneCount, "Orders"));
+                                        pieEntryList.add(new PieEntry(PendingCount, "Pending Orders"));
+
+
+                                        PieDataSet pieDataSet = new PieDataSet(pieEntryList, "Your Progress");
+                                        ArrayList<Integer> colorArray = new ArrayList<>();
+                                        colorArray.add(getColor(R.color.OrderColors));
+                                        colorArray.add(getColor(R.color.CompletionColors));
+                                        pieDataSet.setColors(colorArray);
+
+                                        PieData pieData = new PieData();
+                                        pieData.setDataSet(pieDataSet);
+                                        pieData.setValueTextSize(18);
+                                        pieChart.setData(pieData);
+                                        pieChart.invalidate();
+
+
+                                    }
+                                });
+
+
+                    }
+                });
+
+
+
     }
 }
