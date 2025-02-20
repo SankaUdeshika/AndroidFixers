@@ -22,4 +22,10 @@
         android:name="lk.sankaudeshika.androidfixers.ui.slideshow.SlideshowFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
+
+    <fragment
+        android:id="@+id/nav_pendingorders"
+        android:name="lk.sankaudeshika.androidfixers.ui.pendingorders.PendingOrdersFragment"
+        android:label="@string/pendingOrder_topics"
+        tools:layout="@layout/fragment_pending_orders" />
 </navigation>

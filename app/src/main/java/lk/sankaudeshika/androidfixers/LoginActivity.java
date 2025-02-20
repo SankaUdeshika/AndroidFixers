@@ -135,6 +135,9 @@ public class LoginActivity extends AppCompatActivity {
                                         for (DocumentSnapshot documentItem : documentList ) {
                                             SharedPreferences.Editor editor = sp.edit();
                                             editor.putString("Default_mobile",String.valueOf(documentItem.get("mobile_1")));
+                                            editor.putString("Default_vendor_id",documentItem.getId());
+                                            editor.putString("Default_CompanyName",String.valueOf(documentItem.get("seller_company")));
+
 
                                             if(rememberMeSwitch.isChecked() == true){
                                                 Log.i("appout","Go Dashabord");
