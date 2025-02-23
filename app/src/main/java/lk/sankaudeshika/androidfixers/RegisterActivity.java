@@ -323,6 +323,7 @@ public class RegisterActivity extends AppCompatActivity {
                                                 sellerDetails.put("email",registerEmail.getText().toString());
                                                 sellerDetails.put("location","none");
                                                 sellerDetails.put("status","acive");
+                                                sellerDetails.put("profileImagePath","null");
 
 
 

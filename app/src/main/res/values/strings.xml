@@ -52,6 +52,7 @@
 
     <!--  My Profile text  -->
     <string name="action_profile_imageChange">Change Image</string>
+    <string name="action_profile_Item">My Profile</string>
 
     <!--  Pending Orders  -->
     <string name="pendingOrder_topics">Your Pending Orders</string>

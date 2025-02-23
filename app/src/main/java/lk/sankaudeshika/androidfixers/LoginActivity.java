@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         //       set mobile numbet SP to text field
-        String logedMobile = sp.getString("mobile", null);
+        String logedMobile = sp.getString("mobile_1", null);
         if (logedMobile == null) {
             Log.i("appout", "null");
         } else {
