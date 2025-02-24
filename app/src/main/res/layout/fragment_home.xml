@@ -28,4 +28,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="44dp"
+        android:src="@drawable/appoinment"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/HomepieChart" />
+
+    <TextView
+        android:id="@+id/appoinment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="appoinment"
+        app:layout_constraintEnd_toEndOf="@+id/imageButton2"
+        app:layout_constraintStart_toStartOf="@+id/imageButton2"
+        tools:layout_editor_absoluteY="532dp" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="223dp"
+        android:layout_height="270dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginBottom="25dp"
+        android:src="@drawable/serviceadd"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="127dp"
+        android:layout_height="63dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="92dp"
+        android:text="Progress"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
