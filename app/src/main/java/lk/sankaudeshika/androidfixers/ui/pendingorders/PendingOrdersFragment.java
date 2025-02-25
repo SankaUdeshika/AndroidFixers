@@ -138,6 +138,17 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.PendingOrderViewHol
     public void onBindViewHolder(@NonNull PendingOrderViewHolder holder, int position) {
         PendingOrders pendingOrdersObject = pendingOrdersArrayList.get(position);
         Log.i("appout", "onBindViewHolder: " +pendingOrdersArrayList.get(position).getBookingID());
+        FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+        firestore.collection("user").whereEqualTo("mobile",pendingOrdersArrayList.get(position).getCustomerMobile())
+                        .get()
+                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
+                                        holder.customerName.setText(documentSnapshots.get(0).getString("name"));
+                                    }
+                                });
+
         holder.customerName.setText(pendingOrdersArrayList.get(position).getBookingID());
         holder.customerMobile.setText(pendingOrdersArrayList.get(position).getCustomerMobile());
         holder.date.setText(pendingOrdersArrayList.get(position).getDate());
@@ -149,7 +160,7 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.PendingOrderViewHol
                 Log.i("appout", "onClicked"+bookingId);
                 FirebaseFirestore firestore = FirebaseFirestore.getInstance();
                 HashMap<String, Object> updateStatusMap = new HashMap<>();
-                updateStatusMap.put("status","active");
+                updateStatusMap.put("status","done");
                 firestore.collection("booking").document(bookingId).update(updateStatusMap)
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override

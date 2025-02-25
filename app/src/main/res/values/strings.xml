@@ -56,6 +56,8 @@
     <string name="action_profile_imageChange">Change Image</string>
     <string name="action_profile_Item">My Profile</string>
     <string name="SellerManagement">Seller Management</string>
+    <string name="ChangeLocaiton">Change Location</string>
+
 
     <!--  Pending Orders  -->
     <string name="pendingOrder_topics">Your Pending Orders</string>
