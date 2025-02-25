@@ -3,6 +3,7 @@ package lk.sankaudeshika.androidfixers;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -142,11 +143,16 @@ class CustomerAdapter extends RecyclerView.Adapter<CustomerAdapter.CustomerViewH
                         });
             }
         });
-        Picasso.get()
-                .load(ServerURL.ServerImages+customer.getId()+"_profileImage.jpg")
-                .resize(500, 500)
-                .centerCrop()
-                .into(holder.customerImage);
+        try {
+            Picasso.get()
+                    .load(ServerURL.ServerImages+customer.getId()+"_profileImage.jpg")
+                    .resize(500, 500)
+                    .centerCrop()
+                    .into(holder.customerImage);
+        } catch (Exception e) {
+            Log.e("appout", "onBindViewHolder: "+e.toString() );
+            throw new RuntimeException(e);
+        }
 
     }
 
