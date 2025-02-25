@@ -55,7 +55,7 @@ public class HomeFragment extends Fragment {
         //        SharedPreferences Details
         SharedPreferences sp = requireActivity().getSharedPreferences("lk.sankaudeshika.androidfixers", Context.MODE_PRIVATE);
         vendor_id = sp.getString("Default_vendor_id","null");
-        Log.i("appout", "onCreateView: "+vendor_id);
+
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
 
         //        Load Pie Chart
@@ -67,44 +67,41 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         PendingCount = task.getResult().size();
+                    }
+                });
+
+        firestore.collection("booking")
+                .whereEqualTo("vendor_id",vendor_id)
+                .whereEqualTo("status","done")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        DoneCount = task.getResult().size();
                         Log.i("appout", "onComplete: "+task.getResult().size());
 
-                        firestore.collection("booking")
-                                .whereEqualTo("vendor_id",vendor_id)
-                                .whereEqualTo("status","done")
-                                .get()
-                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        DoneCount = task.getResult().size();
-                                        Log.i("appout", "onComplete: "+task.getResult().size());
+                        Log.i("appout", "onComplete: "+PendingCount);
+                        PieChart pieChart = requireActivity().findViewById(R.id.HomepieChart);
+                        ArrayList<PieEntry> pieEntryList = new ArrayList<>();
+                        pieEntryList.add(new PieEntry(DoneCount, "Orders"));
+                        pieEntryList.add(new PieEntry(PendingCount, "Pending Orders"));
 
-                                        Log.i("appout", "onComplete: "+PendingCount);
-                                        PieChart pieChart = requireActivity().findViewById(R.id.HomepieChart);
-                                        ArrayList<PieEntry> pieEntryList = new ArrayList<>();
-                                        pieEntryList.add(new PieEntry(50, "Orders"));
-                                        pieEntryList.add(new PieEntry(30, "Pending Orders"));
+                        for (PieEntry item: pieEntryList) {
+                            Log.i("appout", "o"+String.valueOf(item.getValue()));
+                        }
 
-                                        for (PieEntry item: pieEntryList) {
-                                            Log.i("appout", "o"+String.valueOf(item.getValue()));
-                                        }
+                        PieDataSet pieDataSet = new PieDataSet(pieEntryList, "Your Progress");
+                        ArrayList<Integer> colorArray = new ArrayList<>();
+                        colorArray.add(getResources().getColor(R.color.OrderColors));
+                        colorArray.add(getResources().getColor(R.color.CompletionColors));
+                        pieDataSet.setColors(colorArray);
 
-                                        PieDataSet pieDataSet = new PieDataSet(pieEntryList, "Your Progress");
-                                        ArrayList<Integer> colorArray = new ArrayList<>();
-                                        colorArray.add(getResources().getColor(R.color.OrderColors));
-                                        colorArray.add(getResources().getColor(R.color.CompletionColors));
-                                        pieDataSet.setColors(colorArray);
+                        PieData pieData = new PieData();
+                        pieData.setDataSet(pieDataSet);
+                        pieData.setValueTextSize(18);
+                        pieChart.setData(pieData);
+                        pieChart.invalidate();
 
-                                        PieData pieData = new PieData();
-                                        pieData.setDataSet(pieDataSet);
-                                        pieData.setValueTextSize(18);
-                                        pieChart.setData(pieData);
-                                        pieChart.invalidate();
-
-
-
-                                    }
-                                });
 
 
                     }
