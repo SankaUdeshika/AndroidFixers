@@ -23,6 +23,12 @@
         android:theme="@style/Theme.AndroidFixers"
         tools:targetApi="31">
         <activity
+            android:name=".ManageCustomerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ManageSellerActivity"
+            android:exported="false" />
+        <activity
             android:name=".AdminHomeActivity"
             android:exported="false" />
 

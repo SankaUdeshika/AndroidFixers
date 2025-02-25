@@ -49,7 +49,9 @@
     <!--    Home Fragment Text -->
     <string name="Home_chartTopic">Your Progress Bar Is Here</string>
 
-
+    <string name="manageCustomer">Manage Customer</string>
+    <string name="manageSellers">Manage Sellers</string>
+    <string name="Delete">Delete</string>
     <!--  My Profile text  -->
     <string name="action_profile_imageChange">Change Image</string>
     <string name="action_profile_Item">My Profile</string>
