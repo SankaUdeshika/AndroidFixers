@@ -12,4 +12,8 @@
     <color name="subText">#6D6A6A</color>
     <color name="WarningText">#FF0000</color>
     <color name="SuccessText">#048A07</color>
+    <!--  Pie Chart Colors -->
+    <color name="OrderColors">#083DFD</color>
+    <color name="CompletionColors">#FF4800</color>
+
 </resources>

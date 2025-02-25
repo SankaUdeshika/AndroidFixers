@@ -65,7 +65,7 @@ public class LoginActivity extends AppCompatActivity {
         }
 
         //       set mobile numbet SP to text field
-        String logedMobile = sp.getString("mobile", null);
+        String logedMobile = sp.getString("mobile_1", null);
         if (logedMobile == null) {
             Log.i("appout", "null");
         } else {
@@ -135,6 +135,9 @@ public class LoginActivity extends AppCompatActivity {
                                         for (DocumentSnapshot documentItem : documentList ) {
                                             SharedPreferences.Editor editor = sp.edit();
                                             editor.putString("Default_mobile",String.valueOf(documentItem.get("mobile_1")));
+                                            editor.putString("Default_vendor_id",documentItem.getId());
+                                            editor.putString("Default_CompanyName",String.valueOf(documentItem.get("seller_company")));
+
 
                                             if(rememberMeSwitch.isChecked() == true){
                                                 Log.i("appout","Go Dashabord");
@@ -172,7 +175,29 @@ public class LoginActivity extends AppCompatActivity {
                                         }
 
                                     } else {
-                                        new AlertDialog.Builder(LoginActivity.this).setTitle("Invalid User Details.").setMessage("Please Enter Valid User Details").show();
+                                        FirebaseFirestore firestoreadmin = FirebaseFirestore.getInstance();
+                                        firestoreadmin.collection("admin")
+                                                .whereEqualTo("mobile", mobile.getText().toString())
+                                                .whereEqualTo("password", password.getText().toString())
+                                                .get()
+                                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                    @Override
+                                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                            if(task.getResult().size() == 0){
+                                                                new AlertDialog.Builder(LoginActivity.this).setTitle("Invalid User Details.").setMessage("Please Enter Valid User Details").show();
+                                                            }else{
+                                                                List<DocumentSnapshot> documentSnapshotslist = task.getResult().getDocuments();
+                                                                for(DocumentSnapshot documentItem: documentSnapshotslist){
+                                                                    Log.i("appout", "onComplete: admin "+documentItem.getString("mobile"));
+                                                                    Intent i = new Intent(LoginActivity.this,AdminHomeActivity.class);
+                                                                    startActivity(i);
+
+                                                                }
+                                                            }
+
+                                                    }
+                                                });
+
                                     }
                                 }
                             })

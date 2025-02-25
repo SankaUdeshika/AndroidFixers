@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/SecondColor">
+
+    <TextView
+        android:id="@+id/CustomerName"
+        android:layout_width="0dp"
+        android:layout_height="33dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/customerMobile"
+        android:layout_width="161dp"
+        android:layout_height="48dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/CustomerName"
+        app:layout_constraintTop_toBottomOf="@+id/CustomerName" />
+
+    <TextView
+        android:id="@+id/datetime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toTopOf="@+id/approvedBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.181" />
+
+    <Button
+        android:id="@+id/approvedBtn"
+        android:layout_width="97dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/primaryColor"
+        android:text="@string/approve"
+        android:textColor="@color/black"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toStartOf="@+id/orderCancel"
+        app:layout_constraintTop_toTopOf="@+id/orderCancel" />
+
+    <Button
+        android:id="@+id/orderCancel"
+        android:layout_width="91dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="16dp"
+        android:backgroundTint="@color/WarningText"
+        android:text="@string/cancel"
+        android:textSize="10sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/bookingID"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="50dp"
+        android:layout_marginBottom="8dp"
+        android:text="TextView"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/orderCancel"
+        app:layout_constraintStart_toEndOf="@+id/customerMobile"
+        app:layout_constraintTop_toBottomOf="@+id/orderCancel" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

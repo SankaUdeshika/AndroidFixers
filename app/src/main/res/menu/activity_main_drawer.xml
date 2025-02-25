@@ -16,5 +16,17 @@
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_slideshow" />
+
+        <item
+            android:id="@+id/nav_pendingorders"
+            android:icon="@drawable/baseline_pending_actions_24"
+            android:title="@string/pendingOrder_topics" />
+
+        <item
+            android:id="@+id/nav_myprofile"
+            android:icon="@drawable/itemmyprofile2"
+            android:title="@string/action_profile_Item" />
+
+
     </group>
 </menu>
