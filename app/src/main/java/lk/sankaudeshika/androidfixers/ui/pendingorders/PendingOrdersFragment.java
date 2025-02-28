@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,7 +21,9 @@ import android.widget.TextView;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
@@ -48,47 +51,42 @@ public class PendingOrdersFragment extends Fragment {
         String vendor_mobile = sp.getString("Default_mobile","null");
 
         //        Load Pending Orders
-
         View view = inflater.inflate(R.layout.fragment_pending_orders, container, false);
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore.collection("booking")
                 .whereEqualTo("vendor_mobile", vendor_mobile) // Filter by Vendor ID
                 .whereEqualTo("status", "pending")    // Filter by Pending Status
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.e("Firestore Error", error.getMessage());
+                            return;
+                        }
 
                         ArrayList<PendingOrders> pendingOrdersList = new ArrayList<>();
-                        List<DocumentSnapshot> list = task.getResult().getDocuments();
 
-                        for (DocumentSnapshot documentSnapshot : list) {
+                        if (value != null) {
+                            for (DocumentSnapshot documentSnapshot : value.getDocuments()) {
+                                String bookingId = documentSnapshot.getId();
+                                String date = documentSnapshot.getString("date");
+                                String time = documentSnapshot.getString("time");
+                                String customer_mobile = documentSnapshot.getString("cusomier_id");
+                                Log.i("appout", "customerMobile is: " +  documentSnapshot.getString("cusomier_id"));
 
-                            String bookingId = documentSnapshot.getId();
-                            String date = documentSnapshot.getString("date");
-                            String time = documentSnapshot.getString("time");
-                            String cutomer_mobile = documentSnapshot.getString("cusomier_id");
-                            pendingOrdersList.add(new PendingOrders(cutomer_mobile,date,time,bookingId));
-
+                                pendingOrdersList.add(new PendingOrders(customer_mobile, date, time, bookingId));
+                            }
                         }
 
-
-                        for (PendingOrders pendingItem: pendingOrdersList) {
-                            Log.i("appout", "listIS: "+pendingItem.getBookingID());
+                        for (PendingOrders pendingItem : pendingOrdersList) {
+                            Log.i("appout", "listIS: " + pendingItem.getCustomerMobile());
                         }
 
-
-                        RecyclerView pendingJosBox = view.findViewById(R.id.pendingOrdersRecycleView);
-                        pendingJosBox.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
-                        pendingJosBox.setAdapter(new OrderAdapter(pendingOrdersList, view.getContext()));
-
+                        RecyclerView pendingJobsBox = view.findViewById(R.id.pendingOrdersRecycleView);
+                        pendingJobsBox.setLayoutManager(new LinearLayoutManager(view.getContext(), LinearLayoutManager.VERTICAL, false));
+                        pendingJobsBox.setAdapter(new OrderAdapter(pendingOrdersList, view.getContext()));
                     }
                 });
-
-
-
-
-
         return view;
     }
 }
@@ -102,6 +100,7 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.PendingOrderViewHol
         TextView customerName;
         TextView bookingId;
         TextView date;
+        TextView time;
         Button approvedBtn;
         Button orderCancel;
         public PendingOrderViewHolder(@NonNull View itemView) {
@@ -112,7 +111,7 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.PendingOrderViewHol
             bookingId = itemView.findViewById(R.id.bookingID);
             approvedBtn = itemView.findViewById(R.id.approvedBtn);
             orderCancel = itemView.findViewById(R.id.orderCancel);
-
+            time = itemView.findViewById(R.id.datetime);
         }
     }
     private ArrayList<PendingOrders> pendingOrdersArrayList;
@@ -136,8 +135,10 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.PendingOrderViewHol
 
     @Override
     public void onBindViewHolder(@NonNull PendingOrderViewHolder holder, int position) {
+        String customerNamevariable ;
         PendingOrders pendingOrdersObject = pendingOrdersArrayList.get(position);
-        Log.i("appout", "onBindViewHolder: " +pendingOrdersArrayList.get(position).getBookingID());
+        Log.i("appout", "onBindViewHolder: " +pendingOrdersObject.getCustomerMobile());
+
         FirebaseFirestore firestore = FirebaseFirestore.getInstance();
         firestore.collection("user").whereEqualTo("mobile",pendingOrdersArrayList.get(position).getCustomerMobile())
                         .get()
@@ -146,13 +147,15 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.PendingOrderViewHol
                                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                         List<DocumentSnapshot> documentSnapshots = task.getResult().getDocuments();
                                         holder.customerName.setText(documentSnapshots.get(0).getString("name"));
+                                        Log.i("appout", "onComplete: Customer Name is"+pendingOrdersArrayList.get(position).getCustomerMobile());
                                     }
                                 });
 
-        holder.customerName.setText(pendingOrdersArrayList.get(position).getBookingID());
         holder.customerMobile.setText(pendingOrdersArrayList.get(position).getCustomerMobile());
         holder.date.setText(pendingOrdersArrayList.get(position).getDate());
+        holder.time.setText(pendingOrdersArrayList.get(position).getTime());
         holder.bookingId.setText(pendingOrdersArrayList.get(position).getBookingID());
+//      Approve  btn
         holder.approvedBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -165,14 +168,15 @@ class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.PendingOrderViewHol
                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                             @Override
                             public void onComplete(@NonNull Task<Void> task) {
-                               RecyclerView recyclerView = view.findViewById(R.id.pendingOrdersRecycleView);
-                                new AlertDialog.Builder(view.getContext()).setTitle("Update Success").setMessage("Order Appoinment is Successfully Active.").show();
-
+                                RecyclerView recyclerView = view.findViewById(R.id.pendingOrdersRecycleView);
+                                new AlertDialog.Builder(view.getContext()).setTitle("Update Success").setMessage("Order Appoinment is Successfully Done.").show();
                             }
                         });
             }
         });
 
+
+//      cancel btn
         holder.orderCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

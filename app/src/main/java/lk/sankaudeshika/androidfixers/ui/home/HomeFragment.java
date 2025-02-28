@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -27,6 +28,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.List;
 
+import lk.sankaudeshika.androidfixers.HomeActivity;
 import lk.sankaudeshika.androidfixers.R;
 import lk.sankaudeshika.androidfixers.ShopLocatoinActivity;
 import lk.sankaudeshika.androidfixers.databinding.FragmentHomeBinding;
@@ -101,14 +103,19 @@ public class HomeFragment extends Fragment {
                         pieData.setValueTextSize(18);
                         pieChart.setData(pieData);
                         pieChart.invalidate();
-
-
-
                     }
                 });
 
 
 //        Send Shop Location Activity
+        ImageButton locationButton = root.findViewById(R.id.imageButton);
+        locationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(root.getContext(),ShopLocatoinActivity.class);
+                startActivity(intent);
+            }
+        });
 //        SharedPreferences sp = requireActivity().getSharedPreferences("lk.sankaudeshika.androidfixers", Context.MODE_PRIVATE);
         String mobile = sp.getString("Default_mobile","null");
         firestore.collection("vendor")
