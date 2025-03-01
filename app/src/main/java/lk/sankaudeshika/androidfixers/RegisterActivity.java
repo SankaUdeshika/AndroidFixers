@@ -321,8 +321,8 @@ public class RegisterActivity extends AppCompatActivity {
                                                 sellerDetails.put("seller_company",registerCompanyName.getText().toString());
                                                 sellerDetails.put("password",registerpassword.getText().toString());
                                                 sellerDetails.put("email",registerEmail.getText().toString());
-                                                sellerDetails.put("location","none");
-                                                sellerDetails.put("status","acive");
+                                                sellerDetails.put("locaiton","none");
+                                                sellerDetails.put("status","active");
                                                 sellerDetails.put("profileImagePath","null");
 
 
